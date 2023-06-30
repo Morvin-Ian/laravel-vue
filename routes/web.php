@@ -15,8 +15,10 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::controller(PostController::class)->group(function(){
-    Route::get('/posts/create-post', 'index');
-    Route::post('/post/{post}/', 'show');
-    Route::delete('/category/{category}', 'category')->name('destroy');
+    Route::get('/', 'index');
+    Route::post('/post/{post:slug}/', 'show');
+    Route::delete('/category/{category:slug}', 'category');
+    Route::delete('/author/{user:name}/', 'author');
+
 
 });
