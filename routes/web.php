@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\PostController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,6 +14,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::controller(PostController::class)->group(function(){
+    Route::get('/posts/create-post', 'index');
+    Route::post('/post/{post}/', 'show');
+    Route::delete('/category/{category}', 'category')->name('destroy');
+
 });
