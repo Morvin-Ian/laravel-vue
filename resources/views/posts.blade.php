@@ -1,14 +1,15 @@
-<x-layout>
+@extends('layout')
+@section('content')
     @foreach($posts as $post)
         <article>
             <h1>
-                <a href="/posts/{{ $post->slug }}">
-                    {!! $post->title  !!}
+                <a href="{{ route ('post', $post->slug) }}">
+                    {{ $post->title }}
                 </a>
             </h1>
 
             <p>
-                By <a href="/authors/{{ $post->author->username }}">{{ $post->author->name }}</a> in <a href="/categories/{{ $post->category->slug }}">{{ $post->category->name }}</a>
+                By <a href="{{route ('author',$post->author->name) }}"> {{ $post->author->name }}</a> in <a href="{{ route ('category', $post->category->slug)}}">{{ $post->category->name }}</a>
             </p>
 
             <div>
@@ -16,4 +17,4 @@
             </div>
         </article>
     @endforeach
-</x-layout>
+@endsection
