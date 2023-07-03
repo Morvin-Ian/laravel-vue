@@ -26,8 +26,8 @@ class DatabaseSeeder extends Seeder
             foreach ($categories as $category){
 
                 \App\Models\Post::create([
-                    'author'=> $user->id,
-                    'category'=> $category->id,
+                    'user_id'=> $user->id,
+                    'category_id'=> $category->id,
                     'slug' => Str::slug(fake()->unique()->sentence),
                     'title' => fake()->sentence,
                     'body' => fake()->paragraphs(3, true)

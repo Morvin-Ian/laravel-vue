@@ -29,5 +29,7 @@ Route::controller(UserController::class)->group(function(){
 Route::controller(PostController::class)->group(function(){
     Route::get('/', 'index')->name('posts');
     Route::get('/post/{post:slug}/', 'show')->name('post');
+    Route::get('/user/{user:name}/', 'author')->name('author');
+    Route::get('/category/{category:name}/', 'category')->name('category');
 
 });

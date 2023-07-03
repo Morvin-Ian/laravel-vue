@@ -7,15 +7,12 @@
     @unless (count($posts)==0)
 
         @foreach($posts as $key => $post)
-                
-        @php
-            $author = \App\Models\User::find($post->author);
-        @endphp
-        
         <article>
             <div>
                 <a class="text-dark" href="{{ route ('post', $post->slug) }}"><h6 style="font-weight: bold">{{$key + 1}}. {{ $post->title }} <small>(Written - {{$post->created_at->diffForHumans()}})</small></h6> </a>
-                <small>Author: {{$author->name}}</small>
+                <small>Author: <a href="{{route('author', $post->author->name)}}">{{$post->author->name}}</a></small> <br>
+                <small>category: <a href="{{route('category', $post->category->name)}}">{{$post->category->name}}</a></small>
+
                 <p>{{Str::limit($post->body, 200)}}</p>
 
             </div>
@@ -23,7 +20,9 @@
         <hr>
         @endforeach
 
-        <p>{{$posts->links()}}</p>
+        @if(request()->is('/')) 
+            <p>{{$posts->links()}}</p> 
+        @endif
     @else
         <p class="lead">No Blogs Available</p>
             

@@ -36,7 +36,7 @@ class PostController extends Controller
     {
         $posts = $category->posts;
         
-        return view('category',[
+        return view('posts',[
             'posts'=>$posts
         ]);
     }
@@ -45,7 +45,7 @@ class PostController extends Controller
     {
         $posts = $user->posts;
         
-        return view('category',[
+        return view('posts',[
             'posts'=>$posts
         ]);
     }
