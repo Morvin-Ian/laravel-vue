@@ -19,6 +19,8 @@
             </div>
         </article>
     @endforeach
+
+    <p>{{$posts->links()}}</p>
 </div>
 
 @endsection
