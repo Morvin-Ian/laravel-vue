@@ -1,19 +1,21 @@
-@extends('layout')
+@extends('components/layout')
 @section('content')
+@include('components/_navbar')
 
-    <article>
+    <div class="container">
             <h1>{{ $post->title }}</h1>
             <p>
-                By <a href="{{route ('author',$post->author->name) }}">{{ $post->author->name }}</a> in <a href="{{ route ('category', $post->category->slug)}}">{{ $post->category->name }}</a>
             </p>
 
             <div>
                 {{ $post->body }}
             </div>
 
-    </article>
+            <a href="{{route ('posts')}}">Go back</a>
 
-    <a href="{{route ('posts')}}">Go back</a>
+
+    </div >
+
 
 
 @endsection
