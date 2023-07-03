@@ -11,7 +11,7 @@ class PostController extends Controller
 
     public function getPosts()
     {
-        return Post::latest()->filter()->paginate(10);
+        return Post::latest()->filter()->paginate(5);
 
     }
 

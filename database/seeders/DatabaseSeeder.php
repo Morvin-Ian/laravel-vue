@@ -29,7 +29,7 @@ class DatabaseSeeder extends Seeder
                     'author'=> $user->id,
                     'category'=> $category->id,
                     'slug' => Str::slug(fake()->unique()->sentence),
-                    'title' => fake()->words(3),
+                    'title' => fake()->sentence,
                     'body' => fake()->paragraphs(3, true)
                 ]);
 

@@ -1,5 +1,5 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-dark">
-    <a class="navbar-brand text-light" href="/">Laravel</a>
+    <a class="navbar-brand text-light" href="/">Laravel Blog</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -12,14 +12,26 @@
         <li class="nav-item">
           <a class="nav-link text-light" href="#">Trending</a>
         </li>
-       
-        <li class="nav-item">
-          <a class="nav-link text-light" href="#">Recents</a>
-        </li>
+   =
 
-        <li class="nav-item">
-            <a class="nav-link text-light" href="#">Authors</a>
-          </li>
+        @auth
+            <li class="nav-item">
+                <a class="nav-link text-light" href="#">@ {{auth()->user()->name}}</a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link text-light" href="{{ route('logout') }}">Sign Out</a>
+            </li>
+    
+         @else
+            <li class="nav-item">
+                <a class="nav-link text-light" href="{{ route('login') }}">Sign In</a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link text-light" href="{{ route('register') }}">Sign Up</a>
+            </li>
+        @endauth
       </ul>
       <form method="GET" class="form-inline my-2 my-lg-0">
         <input class="form-control mr-sm-2" type="search" name="search" placeholder="Search" aria-label="Search">
@@ -27,3 +39,10 @@
       </form>
     </div>
   </nav>
+
+    @if(session()->has('message'))
+        <p class="text-center bg-danger mt-2">
+            <small class=" pt-2 pb-2 ps-5 pe-5" style="color: white; width:100%;" >{{session('message')}}</small>
+        </p>
+
+    @endif
