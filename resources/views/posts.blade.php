@@ -11,7 +11,12 @@
             <div>
                 <a class="text-dark" href="{{ route ('post', $post->slug) }}"><h6 style="font-weight: bold">{{$key + 1}}. {{ $post->title }} <small>(Written - {{$post->created_at->diffForHumans()}})</small></h6> </a>
                 <small>Author: <a href="{{route('author', $post->author->name)}}">{{$post->author->name}}</a></small> <br>
-                <small>category: <a href="{{route('category', $post->category->name)}}">{{$post->category->name}}</a></small>
+                <small>category: <a href="{{route('category', $post->category->name)}}">{{$post->category->name}}</a></small> <br>
+                <small>tags: 
+                    @foreach ($post->tags as $tag)
+                        <a href="{{route('tag', $tag->name)}}">, {{$tag->name}} </a>
+                    @endforeach 
+                </small>
 
                 <p>{{Str::limit($post->body, 200)}}</p>
 

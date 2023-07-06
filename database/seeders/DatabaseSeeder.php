@@ -18,9 +18,9 @@ class DatabaseSeeder extends Seeder
     {
         $users = \App\Models\User::factory(10)->create();
 
-        $categories = \App\Models\Category::factory(10)->create();
+        \App\Models\Category::factory(10)->create();
 
-        $tags = \App\Models\Tag::factory(10)->create();
+        \App\Models\Tag::factory(10)->create();
 
 
         foreach($users as $user){
@@ -29,15 +29,15 @@ class DatabaseSeeder extends Seeder
             $tag = \App\Models\Tag::inRandomOrder()->first(); 
 
             
-                \App\Models\Post::create([
+              $post =  \App\Models\Post::create([
                     'user_id'=> $user->id,
                     'category_id'=> $category->id,
-                    'tag_id'=>$tag->id,
                     'slug' => Str::slug(fake()->unique()->sentence),
                     'title' => fake()->sentence,
                     'body' => fake()->paragraphs(3, true)
                 ]);
 
+                $tag->posts()->attach($post);
 
         }
 

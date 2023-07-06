@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\Post;
+use App\Models\Tag;
 use App\Models\User;
 
 class PostController extends Controller
@@ -44,6 +45,15 @@ class PostController extends Controller
     public function author(User $user)
     {
         $posts = $user->posts;
+        
+        return view('posts',[
+            'posts'=>$posts
+        ]);
+    }
+
+    public function tag(Tag $tag)
+    {
+        $posts = $tag->posts;
         
         return view('posts',[
             'posts'=>$posts

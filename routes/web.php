@@ -31,5 +31,6 @@ Route::controller(PostController::class)->group(function(){
     Route::get('/post/{post:slug}/', 'show')->name('post');
     Route::get('/user/{user:name}/', 'author')->name('author');
     Route::get('/category/{category:name}/', 'category')->name('category');
+    Route::get('/tag/{tag:name}/', 'tag')->name('tag');
 
 });
