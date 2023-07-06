@@ -6,6 +6,8 @@ use App\Models\Category;
 use App\Models\Post;
 use App\Models\Tag;
 use App\Models\User;
+use Illuminate\Http\Request;
+
 
 class PostController extends Controller
 {
@@ -59,5 +61,49 @@ class PostController extends Controller
             'posts'=>$posts
         ]);
     }
+
+
+    public function create()  {
+        if (auth()->check()){
+            $categories = Category::all();
+        }
+        else{
+            return redirect('sign-in');
+        }
+
+        $assoc_array = [
+            "categories"=>$categories
+        ];
+
+        return view('post_creation', $assoc_array);
+    }
+
+
+    public function create_post(Request $request)  {
+        if (auth()->check())
+        {
+            $fields = $request->validate([
+                'title'=>['required', 'min:3'],
+                'body' => ['required', 'min:10'],
+                'tags'=> ['required'],
+                'category_id' => ['required'],
+                'user_id'=> ['required'],
+                'slug'=> ['required']
+    
+            ]);
+
+            Post::create($fields);
+            return redirect('/');
+        }
+
+        else
+        {
+            return redirect('sign-in');
+        }
+
+
+        return view('post_creation');
+    }
+
     
 }

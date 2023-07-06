@@ -16,30 +16,30 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        $users = \App\Models\User::factory(10)->create();
+        // $users = \App\Models\User::factory(10)->create();
 
-        \App\Models\Category::factory(10)->create();
+        \App\Models\Category::factory(4)->create();
 
-        \App\Models\Tag::factory(10)->create();
+        // \App\Models\Tag::factory(10)->create();
 
 
-        foreach($users as $user){
+        // foreach($users as $user){
 
-            $category = \App\Models\Category::inRandomOrder()->first(); 
-            $tag = \App\Models\Tag::inRandomOrder()->first(); 
+        //     $category = \App\Models\Category::inRandomOrder()->first(); 
+        //     $tag = \App\Models\Tag::inRandomOrder()->first(); 
 
             
-              $post =  \App\Models\Post::create([
-                    'user_id'=> $user->id,
-                    'category_id'=> $category->id,
-                    'slug' => Str::slug(fake()->unique()->sentence),
-                    'title' => fake()->sentence,
-                    'body' => fake()->paragraphs(3, true)
-                ]);
+            //   $post =  \App\Models\Post::create([
+            //         'user_id'=> $user->id,
+            //         'category_id'=> $category->id,
+            //         'slug' => Str::slug(fake()->unique()->sentence),
+            //         'title' => fake()->sentence,
+            //         'body' => fake()->paragraphs(3, true)
+            //     ]);
 
-                $tag->posts()->attach($post);
+        //         $tag->posts()->attach($post);
 
-        }
+        // }
 
         // \App\Models\User::factory()->create([
         //     'name' => 'Test User',

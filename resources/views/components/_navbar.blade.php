@@ -9,10 +9,7 @@
         <li class="nav-item active">
           <a class="nav-link text-light" href="/">Home <span class="sr-only">(current)</span></a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link text-light" href="#">Trending</a>
-        </li>
-   =
+
 
         @auth
             <li class="nav-item">
@@ -20,9 +17,15 @@
             </li>
 
             <li class="nav-item">
+              <a class="nav-link text-light" href="{{ route('create') }}">Create Post</a>
+          </li>
+  
+
+            <li class="nav-item">
                 <a class="nav-link text-light" href="{{ route('logout') }}">Sign Out</a>
             </li>
-    
+
+
          @else
             <li class="nav-item">
                 <a class="nav-link text-light" href="{{ route('login') }}">Sign In</a>

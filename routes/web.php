@@ -32,5 +32,9 @@ Route::controller(PostController::class)->group(function(){
     Route::get('/user/{user:name}/', 'author')->name('author');
     Route::get('/category/{category:name}/', 'category')->name('category');
     Route::get('/tag/{tag:name}/', 'tag')->name('tag');
+    Route::get('/create', 'create')->name('create');
+
+    Route::post('/create_post', 'create_post')->name('create_post');
+
 
 });

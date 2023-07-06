@@ -22,11 +22,12 @@ class CategoryFactory extends Factory
     public function definition(): array
     {
 
-            $name = $this->faker->unique()->word;
-            $slug = Str::slug($name);
+  
+        $categories = ['Politics', 'Technology', 'Sports', 'Business'];
+        $slug = Str::slug($categories[array_rand($categories, 1)]);
     
             return [
-                'name' => $name,
+                'name' => $categories[array_rand($categories, 1)],
                 'slug' => $slug,
             ];
     }
