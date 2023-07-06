@@ -20,20 +20,24 @@ class DatabaseSeeder extends Seeder
 
         $categories = \App\Models\Category::factory(10)->create();
 
+        $tags = \App\Models\Tag::factory(10)->create();
+
+
         foreach($users as $user){
+
+            $category = \App\Models\Category::inRandomOrder()->first(); 
+            $tag = \App\Models\Tag::inRandomOrder()->first(); 
+
             
-
-            foreach ($categories as $category){
-
                 \App\Models\Post::create([
                     'user_id'=> $user->id,
                     'category_id'=> $category->id,
+                    'tag_id'=>$tag->id,
                     'slug' => Str::slug(fake()->unique()->sentence),
                     'title' => fake()->sentence,
                     'body' => fake()->paragraphs(3, true)
                 ]);
 
-            }
 
         }
 
