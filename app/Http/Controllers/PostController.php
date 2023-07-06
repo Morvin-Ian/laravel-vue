@@ -7,6 +7,7 @@ use App\Models\Post;
 use App\Models\Tag;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 
 class PostController extends Controller
@@ -82,17 +83,30 @@ class PostController extends Controller
     public function create_post(Request $request)  {
         if (auth()->check())
         {
+                    
             $fields = $request->validate([
                 'title'=>['required', 'min:3'],
                 'body' => ['required', 'min:10'],
-                'tags'=> ['required'],
                 'category_id' => ['required'],
                 'user_id'=> ['required'],
                 'slug'=> ['required']
     
             ]);
 
-            Post::create($fields);
+            $post = Post::create($fields);
+            $tags = $request["tags"];
+            $array = explode(",", $tags);
+
+            foreach( $array as $arr)
+            {
+                $tag = Tag::create([
+                    'name'=> $arr
+                ]);
+
+                $tag->posts()->attach($post);
+
+
+            }
             return redirect('/');
         }
 
