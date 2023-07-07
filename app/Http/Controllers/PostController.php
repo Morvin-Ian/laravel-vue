@@ -67,13 +67,17 @@ class PostController extends Controller
     public function create()  {
         if (auth()->check()){
             $categories = Category::all();
+            $tags = Tag::all();
+
         }
         else{
             return redirect('sign-in');
         }
 
         $assoc_array = [
-            "categories"=>$categories
+            "categories"=>$categories,
+            "tags"=>$tags
+
         ];
 
         return view('post_creation', $assoc_array);
@@ -94,18 +98,34 @@ class PostController extends Controller
             ]);
 
             $post = Post::create($fields);
+            $existing_tags = Tag::all();
             $tags = $request["tags"];
             $array = explode(",", $tags);
 
-            foreach( $array as $arr)
-            {
-                $tag = Tag::create([
-                    'name'=> $arr
-                ]);
-
-                $tag->posts()->attach($post);
-
-
+            foreach ($array as $arr) {
+                // Flag to check if the tag already exists
+                $tagExists = false;
+            
+                foreach ($existing_tags as $existing_tag) {
+                    if (trim($arr) === $existing_tag->name) {
+                        // Tag already exists
+                        $tagExists = true;
+            
+                        // Attach the existing tag to the post
+                        $existing_tag->posts()->attach($post);
+            
+                        break; // Exit the inner loop since a match is found
+                    }
+                }
+            
+                if (!$tagExists) {
+                    // Create a new tag since it doesn't exist
+                    $tag = Tag::create([
+                        'name' => trim($arr)
+                    ]);
+            
+                    $tag->posts()->attach($post);
+                }
             }
             return redirect('/');
         }

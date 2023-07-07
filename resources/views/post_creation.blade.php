@@ -49,7 +49,15 @@
                         <small class="text-danger m-1">{{$message}}</small class="text-danger m-1"> <br>
                     @enderror
                     <label class="form-label" for="form2Example27">Tags</label>
-                    <input type="text" id="form2Example27" name="tags" class="form-control" placeholder="Separate with comma" value="{{old('tags')}}" />
+                    <input type="text" id="form2Example27" list="tag_list" name="tags" class="form-control" placeholder="Separate with comma" value="{{old('tags')}}" />
+
+                    <datalist id="tag_list">
+                        <select id="tag_list">
+                            @foreach ($tags as $tag)
+                                <option value="{{$tag->name}}">{{$tag->name}}</option>
+                            @endforeach
+                        </select>
+                    </datalist>
                   </div>
 
                   <div class="form-outline mb-4">
