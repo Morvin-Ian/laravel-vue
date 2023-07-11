@@ -25,16 +25,19 @@ Route::get('/unauthorized', function(){
 
 
 Route::get('/posts', [PostControllerApi::class, 'posts']);
+Route::get('/post/{post}', [PostControllerApi::class, 'post']);
+Route::get('/category/{category:name}', [PostControllerApi::class, 'category']);
+Route::get('/author/{user:name}', [PostControllerApi::class, 'user']);
 
 
 
 // Authentication
-Route::controller(AuthController::class)->group(function(){
-    Route::post('/register', 'register')->name('register');
-    Route::post('/login',  'login')->name('login');
+// Route::controller(AuthController::class)->group(function(){
+//     Route::post('/register', 'register')->name('register');
+//     Route::post('/login',  'login')->name('login');
     
 
-});
+// });
 
 
 
