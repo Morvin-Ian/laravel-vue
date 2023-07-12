@@ -1,6 +1,9 @@
 # yashio-blog
-
 ## Project setup
+```
+cd frontend
+```
+
 ```
 npm install
 ```
