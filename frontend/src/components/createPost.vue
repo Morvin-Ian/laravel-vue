@@ -1,16 +1,16 @@
 <template>
 
     
-    <form class="p-4">
+    <form class="p-4" method="post" @submit="createPost">
 
         <div class="mb-3 mt-2">
             <label for="exampleInputEmail1" class="form-label">Title</label>
-            <input type="text" v-model="name" class="form-control" id="exampleInputEmail1">
+            <input type="text" v-model="title" class="form-control" id="exampleInputEmail1">
             <div id="emailHelp" class="form-text">Make it meaningful and short.</div>
         </div>
         <div class="mb-3">
             <label for="exampleInputPassword1" class="form-label me-3">Category</label>
-            <select  v-model="selectedOption">
+            <select  v-model="category">
               <option value="">Select an option</option>
               <option  v-for="category in categories" :value="category.id" :key="category.id">{{ category.name }}</option>
             </select>
@@ -22,14 +22,14 @@
             <label for="exampleInputPassword1" class="form-label">Tags</label>
             <input type="text" id="form2Example27" list="tag-list" v-model="tags" class="form-control" placeholder="Separate with comma" />
 
-              <datalist id="tag-list">
+              <!-- <datalist id="tag-list">
                 <select id="tag-list">
-                  <li v-for="category in categories" :key="category.id" >
-                    <option value="`${category.name}`">{{category.name}}</option>
+                  <li v-for="tag in tags" :key="tag.id" >
+                    <option value="`${tag.name}`">{{tag.name}}</option>
                   </li>
 
                 </select>
-              </datalist>
+              </datalist> -->
             <div id="emailHelp" class="form-text">You can select more than one.</div>
         </div>
 
@@ -53,12 +53,21 @@
     return {
       categories: [],
       tags: [],
+      title: '',
+      category: '',
+      body: ''
 
     };
   },
   mounted() {
-    this.fetchCategories()
- 
+    const user = localStorage.getItem("access_token");
+    if(!user)
+    {
+      this.$router.push({name:"login"});
+    }
+    this.fetchCategories();
+    
+
   },
   methods: {
 
@@ -69,8 +78,7 @@
           const response = await fetch(categoryUrl);
           const data = await response.json();
   
-          this.tags = data;
-          console.log(data)
+          this.categories = data;
 
         } catch (error) {
           console.error(error);
@@ -79,13 +87,13 @@
 
     },
     async fetchTags () {
-      const categoryUrl = "http://127.0.0.1:8000/api/categories";
+      const tagUrl = "http://127.0.0.1:8000/api/tags";
 
     try {
-        const response = await fetch(categoryUrl);
+        const response = await fetch(tagUrl);
         const data = await response.json();
 
-        this.categories = data;
+        this.tags = data;
         console.log(data)
 
       } catch (error) {
@@ -96,25 +104,38 @@
 
     async createPost (event) {
         event.preventDefault();
+
+          const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+          let randomString = '';
+
+          for (let i = 0; i < 10; i++) {
+            const randomIndex = Math.floor(Math.random() * characters.length);
+            randomString += characters.charAt(randomIndex);
+          }
+
         const article = {
             title:this.title, 
+            tags:this.tags,
+            slug:randomString,
             category_id:this.category,
             user_id:localStorage.getItem("user"),
             body:this.body
           };
+
+          console.log( JSON.stringify(article))
 
         const postUrl = "http://127.0.0.1:8000/api/create-post";
         const response = await fetch(postUrl, {
             method:"POST",
             headers:{
                 'Content-Type': 'application/json',
-
+                'Authorization': `Bearer ${localStorage.getItem("access_token")}`
             },
             body: JSON.stringify(article), // body data type must match "Content-Type" header
 
         });
 
-        // const data = await response.json();
+        const data = await response.json();
 
         if (!response.ok) 
         {
@@ -124,6 +145,7 @@
 
         else
         {
+          console.log(data)
             this.$router.push({name:"home"});
         }
 

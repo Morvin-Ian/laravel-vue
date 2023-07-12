@@ -27,7 +27,7 @@
         </li>
 
         <li class="nav-item">
-            <router-link v-if="accessToken" class="nav-link active text-light" to="/sign-in">Sign Out</router-link>
+            <a style="cursor: pointer;" v-if="accessToken" class="nav-link active text-light" @click="Logout">Sign Out</a>
         </li>
 
       </ul>
@@ -51,5 +51,11 @@ export default {
     // Check if the access token exists in local storage
     this.accessToken = localStorage.getItem('access_token');
   },
+  methods:{
+    Logout(){
+      localStorage.clear()
+      this.$router.push({name:"home"})
+    }
+  }
 };
 </script>

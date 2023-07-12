@@ -157,7 +157,7 @@ class PostControllerApi extends Controller
                     $tag->posts()->attach($post);
                 }
             }
-            return redirect('/');
+            return response('{"message":article post successful}');
         }
 
 

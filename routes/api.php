@@ -42,19 +42,13 @@ Route::controller(PostControllerApi::class)->group(function(){
     Route::get('/categories',  'categories');
     Route::get('/tags',  'tags');
     Route::get('/author/{user:name}',  'user');
+    Route::post('/create-post',  'create-post');
 
 });
 
 
 
 
-
-//Routes that require tokens
-// Route::group(['middleware' => ['auth:sanctum']], function(){
-//     Route::get('/posts', [PostControllerApi::class, 'posts']);
- 
-
-// });
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
