@@ -14,7 +14,7 @@ class PostControllerApi extends Controller
     public function posts()
     {
         $response = [];
-        $posts = Post::all();
+        $posts = Post::latest()->get();
     
         foreach($posts as $post)
         {
@@ -122,46 +122,43 @@ class PostControllerApi extends Controller
         return response($response);
     }
 
-    public function create_post(Request $request)  
+    public function post_creation(Request $request)
     {
-                    
-            $fields = $request->validate([
-                'title'=>['required', 'min:3'],
-                'body' => ['required', 'min:10'],
-                'category_id' => ['required'],
-                'user_id'=> ['required'],
-                'slug'=> ['required']
-    
-            ]);
+        $fields = $request->validate([
+            'title' => ['required'],
+            'body' => ['required'],
+            'category_id' => ['required'],
+            'user_id' => ['required'],
+            'slug' => ['required']
+        ]);
 
-            $post = Post::create($fields);
-            $existing_tags = Tag::all();
-            $tags = $request["tags"];
-            $array = explode(",", $tags);
+        $post = Post::create($fields);
 
-            foreach ($array as $arr) {
-                $tagExists = false;
-            
-                foreach ($existing_tags as $existing_tag) {
-                    if (trim($arr) === $existing_tag->name) {
-                        $tagExists = true;
-                        $existing_tag->posts()->attach($post);        
-                        break; 
-                    }
-                }
-            
-                if (!$tagExists) {
-                    $tag = Tag::create([
-                        'name' => trim($arr)
-                    ]);
-                    $tag->posts()->attach($post);
+        $existing_tags = Tag::all();
+        $tags = $request["tags"];
+        $array = explode(",", $tags);
+
+        foreach ($array as $arr) {
+            $tagExists = false;
+
+            foreach ($existing_tags as $existing_tag) {
+                if (trim($arr) === $existing_tag->name) {
+                    $tagExists = true;
+                    $existing_tag->posts()->attach($post);
+                    break;
                 }
             }
-            return response('{"message":article post successful}');
+
+            if (!$tagExists) {
+                $tag = Tag::create([
+                    'name' => trim($arr)
+                ]);
+                $tag->posts()->attach($post);
+            }
         }
 
-
-
+        return response('{"message": "Article post successful", "post_id": ' . $post->id . '}', 201);
+    }
 
     
 }

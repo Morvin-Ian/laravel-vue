@@ -122,7 +122,7 @@
             body:this.body
           };
 
-          console.log(JSON.stringify(article))
+          console.log( JSON.stringify(article))
 
         const postUrl = "http://127.0.0.1:8000/api/create-post";
         const response = await fetch(postUrl, {
