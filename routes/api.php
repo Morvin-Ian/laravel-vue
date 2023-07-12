@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\APIS\AuthControllerApi;
 use App\Http\Controllers\APIS\PostControllerApi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -24,20 +25,25 @@ Route::get('/unauthorized', function(){
 })->name('unauthorized');
 
 
-Route::get('/posts', [PostControllerApi::class, 'posts']);
-Route::get('/post/{post}', [PostControllerApi::class, 'post']);
-Route::get('/category/{category:name}', [PostControllerApi::class, 'category']);
-Route::get('/author/{user:name}', [PostControllerApi::class, 'user']);
-
-
-
 // Authentication
-// Route::controller(AuthController::class)->group(function(){
-//     Route::post('/register', 'register')->name('register');
-//     Route::post('/login',  'login')->name('login');
+Route::controller(AuthControllerApi::class)->group(function(){
+    Route::post('/register', 'register')->name('register');
+    Route::post('/login',  'login')->name('login');
     
+});
 
-// });
+
+
+Route::controller(PostControllerApi::class)->group(function(){
+    
+    Route::get('/posts',  'posts');
+    Route::get('/post/{post}',  'post');
+    Route::get('/category/{category:name}',  'category');
+    Route::get('/author/{user:name}',  'user');
+
+});
+
+
 
 
 
