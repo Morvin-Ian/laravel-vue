@@ -15,16 +15,21 @@
             <router-link class="nav-link active text-light" to="/about">Trending</router-link>
         </li>
         <li class="nav-item">
-            <router-link class="nav-link active text-light" to="/create-post">Add Post</router-link>
+            <router-link v-if="accessToken" class="nav-link active text-light" to="/create-post">Add Post</router-link>
         </li>
 
         <li class="nav-item">
-            <router-link class="nav-link active text-light" to="/sign-up">Sign Up</router-link>
+            <router-link v-if="!accessToken" class="nav-link active text-light" to="/sign-up">Sign Up</router-link>
         </li>
 
         <li class="nav-item">
-            <router-link class="nav-link active text-light" to="/sign-in">Sign In</router-link>
+            <router-link v-if="!accessToken" class="nav-link active text-light" to="/sign-in">Sign In</router-link>
         </li>
+
+        <li class="nav-item">
+            <router-link v-if="accessToken" class="nav-link active text-light" to="/sign-in">Sign Out</router-link>
+        </li>
+
       </ul>
       <form class="d-flex">
         <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
@@ -36,6 +41,16 @@
 </template>
 
 <script>
-
+export default {
+  data() {
+    return {
+      accessToken: null, // Initialize accessToken to null
+    };
+  },
+  mounted() {
+    // Check if the access token exists in local storage
+    this.accessToken = localStorage.getItem('access_token');
+    console.log(this.accessToken)
+  },
+};
 </script>
-

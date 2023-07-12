@@ -64,6 +64,11 @@
     };
   },
   mounted() {
+    const user = localStorage.getItem("access_token");
+    if(user)
+    {
+      this.$router.push({name:"home"});
+    }
  
   },
   methods: {
@@ -98,6 +103,7 @@
             console.log(data)
             // Initialize the access & refresh token in localstorage.
             localStorage.setItem('access_token', data.token);
+            this.$router.push({name:"home"});
         }
 
     }

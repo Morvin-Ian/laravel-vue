@@ -100,7 +100,6 @@ methods: {
 
           });
 
-          const data = await response.json();
 
           if (!response.ok) 
           {
@@ -110,10 +109,9 @@ methods: {
 
           else
           {
-              localStorage.clear()
-              console.log(data)
-              // Initialize the access & refresh token in localstorage.
-              localStorage.setItem('access_token', data.token);
+        
+              this.$router.push({name:"login"});
+
           }
 
       }
