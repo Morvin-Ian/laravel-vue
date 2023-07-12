@@ -52,6 +52,19 @@ class PostControllerApi extends Controller
         return response($response);
        
     }
+
+
+    public function categories()
+    {
+        $categories = Category::all();
+        return response($categories);
+    }
+
+    public function tags()
+    {
+        $tags = Tag::all();
+        return response($tags);
+    }
     
 
     public function category(Category $category)
@@ -78,7 +91,7 @@ class PostControllerApi extends Controller
         return response($response);
     }
 
-    public function tags(Tag $tag)
+    public function tag(Tag $tag)
     {
         $posts = $tag->posts;
         return response($posts);
@@ -108,4 +121,47 @@ class PostControllerApi extends Controller
      
         return response($response);
     }
+
+    public function create_post(Request $request)  
+    {
+                    
+            $fields = $request->validate([
+                'title'=>['required', 'min:3'],
+                'body' => ['required', 'min:10'],
+                'category_id' => ['required'],
+                'user_id'=> ['required'],
+                'slug'=> ['required']
+    
+            ]);
+
+            $post = Post::create($fields);
+            $existing_tags = Tag::all();
+            $tags = $request["tags"];
+            $array = explode(",", $tags);
+
+            foreach ($array as $arr) {
+                $tagExists = false;
+            
+                foreach ($existing_tags as $existing_tag) {
+                    if (trim($arr) === $existing_tag->name) {
+                        $tagExists = true;
+                        $existing_tag->posts()->attach($post);        
+                        break; 
+                    }
+                }
+            
+                if (!$tagExists) {
+                    $tag = Tag::create([
+                        'name' => trim($arr)
+                    ]);
+                    $tag->posts()->attach($post);
+                }
+            }
+            return redirect('/');
+        }
+
+
+
+
+    
 }

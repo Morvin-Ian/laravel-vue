@@ -103,6 +103,7 @@
             console.log(data)
             // Initialize the access & refresh token in localstorage.
             localStorage.setItem('access_token', data.token);
+            localStorage.setItem('user', data.user.id);
             this.$router.push({name:"home"});
         }
 

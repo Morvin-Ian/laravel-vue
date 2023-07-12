@@ -50,7 +50,6 @@ export default {
   mounted() {
     // Check if the access token exists in local storage
     this.accessToken = localStorage.getItem('access_token');
-    console.log(this.accessToken)
   },
 };
 </script>
