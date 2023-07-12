@@ -42,7 +42,7 @@ Route::controller(PostControllerApi::class)->group(function(){
     Route::get('/categories',  'categories');
     Route::get('/tags',  'tags');
     Route::get('/author/{user:name}',  'user');
-    Route::post('/create-post',  'create-post');
+    Route::post('/create-post',  'create_post');
 
 });
 

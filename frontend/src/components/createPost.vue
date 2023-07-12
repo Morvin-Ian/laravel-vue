@@ -117,19 +117,18 @@
             title:this.title, 
             tags:this.tags,
             slug:randomString,
-            category_id:this.category,
+            category_id:this.category.toString(),
             user_id:localStorage.getItem("user"),
             body:this.body
           };
 
-          console.log( JSON.stringify(article))
+          console.log(JSON.stringify(article))
 
         const postUrl = "http://127.0.0.1:8000/api/create-post";
         const response = await fetch(postUrl, {
             method:"POST",
             headers:{
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${localStorage.getItem("access_token")}`
             },
             body: JSON.stringify(article), // body data type must match "Content-Type" header
 
