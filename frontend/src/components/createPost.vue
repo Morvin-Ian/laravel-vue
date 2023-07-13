@@ -187,7 +187,6 @@
           };
           
 
-        console.log( JSON.stringify(article))
 
         const postUrl = "http://127.0.0.1:8000/api/create-post";
         const response = await fetch(postUrl, {
@@ -238,7 +237,6 @@
             error.innerText = ""
 
           }
-          console.log(data)
 
           if(data.errors.tags)
           {
