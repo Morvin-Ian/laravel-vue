@@ -24,7 +24,8 @@ class PostControllerApi extends Controller
             $data = [
                 "post" => $post,
                 "category" => $category,
-                "author" => $user
+                "author" => $user,
+                "tags"=>$post->tags()->get()
             ];
     
             $response[] = $data;
@@ -42,7 +43,9 @@ class PostControllerApi extends Controller
         $data = [
             "post"=>$post,
             "category"=> $category,
-            "author"=> $user
+            "author"=> $user,
+            "tags"=>$post->tags()->get()
+
             
 
         ];
@@ -80,7 +83,9 @@ class PostControllerApi extends Controller
             $data = [
                 "post"=>$post,
                 "category"=> $category,
-                "author"=> $user
+                "author"=> $user,
+                "tags"=>$post->tags()->get()
+
                 
             ];
 
@@ -93,9 +98,32 @@ class PostControllerApi extends Controller
 
     public function tag(Tag $tag)
     {
+        $response = [];
+
         $posts = $tag->posts;
-        return response($posts);
-    }
+
+        foreach($posts as $post)
+        {
+            $category = Category::find($post->category_id);
+            $user = User::find($post->user_id);
+
+
+            $data = [
+                "post"=>$post,
+                "category"=> $category,
+                "author"=> $user,
+                "tags"=>$post->tags()->get()
+
+                
+            ];
+
+            $response[] = $data;
+
+        }
+
+        return response($response);
+
+}
 
     public function user(User $user)
     {

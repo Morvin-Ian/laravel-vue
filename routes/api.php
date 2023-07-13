@@ -39,6 +39,7 @@ Route::controller(PostControllerApi::class)->group(function(){
     Route::get('/posts',  'posts');
     Route::get('/post/{post}',  'post');
     Route::get('/category/{category:name}',  'category');
+    Route::get('/tag/{tag:name}',  'tag');
     Route::get('/categories',  'categories');
     Route::get('/tags',  'tags');
     Route::get('/author/{user:name}',  'user');

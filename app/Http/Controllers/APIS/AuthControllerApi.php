@@ -23,6 +23,13 @@ class AuthControllerApi extends Controller
             'password' => bcrypt($fields['password'])
         ]);
 
+        if (!$user)
+        {
+            return response([
+                'message' => 'Email or Username already taken'
+            ], 401);
+        }
+
         $token = $user->createToken('myapptoken')->plainTextToken;
 
         $response = [
@@ -45,7 +52,7 @@ class AuthControllerApi extends Controller
         // Check password
         if(!$user || !Hash::check($fields['password'], $user->password)) {
             return response([
-                'message' => 'Bad creds'
+                'message' => 'Incorrect credentials'
             ], 401);
         }
 

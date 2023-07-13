@@ -14,30 +14,34 @@
               <div class="col-xl-6">
                 <div class="card-body p-md-5 text-black">
                   <h3 class="mb-5 text-uppercase">Register Your Account</h3>
+
+
   
                   <form class='m-5 ps-5 pe-5'  method="POST" @submit="RegisterUser">
+                    <p class="mb-3" style="color: red;" id="message"></p>
+
                     <div class="form-outline mb-4">
                    
-                        <input type="name" id="form3Example9" v-model="name" class="form-control form-control-lg"  />
+                        <input type="name" id="form3Example9" v-model="name" required class="form-control form-control-lg"  />
                         <label class="form-label" for="form3Example9">Username</label>
                       </div>
 
                     <div class="form-outline mb-4">
              
-                        <input type="email" id="form3Example9" v-model="email" class="form-control form-control-lg"  />
+                        <input type="email" id="form3Example9" v-model="email" required class="form-control form-control-lg"  />
                         <label class="form-label" for="form3Example9">Email</label>
                     </div>
     
                 
                     <div class="form-outline mb-4">
             
-                        <input type="password" id="form3Example9" v-model="password" class="form-control form-control-lg" />
+                        <input type="password" id="form3Example9" v-model="password" required class="form-control form-control-lg" />
                         <label class="form-label" for="form3Example9">Password</label>
                     </div>
   
                     <div class="form-outline mb-4">
                 
-                        <input type="password" v-model="password_confirmation" id="form3Example97"  class="form-control form-control-lg" />
+                        <input type="password" v-model="password_confirmation" id="form3Example97"  required class="form-control form-control-lg" />
                         <label class="form-label" for="form3Example97">Password Confirmation</label>
                     </div>
     
@@ -82,11 +86,12 @@ methods: {
       event.preventDefault();
       const credentials = {name: this.name, email:this.email, password:this.password};
       const loginUrl = "http://127.0.0.1:8000/api/register";
+      const error = document.getElementById("message")
+
 
       if(this.password_confirmation !== this.password)
       {
-        console.log("Passwords don't match")
-
+          error.innerHTML = "Passwords do not match"
       }
 
       else{
@@ -100,11 +105,12 @@ methods: {
 
           });
 
+          const data = await response.json();
+
 
           if (!response.ok) 
           {
-            console.log("Invalid Credentials")
-              
+            error.innerHTML = data.message
           }
 
           else

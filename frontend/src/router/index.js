@@ -3,6 +3,7 @@ import PostItems from '../components/PostItems.vue'
 import PostItem from '../components/PostItem.vue'
 import CategoryItems from '../components/CategoryItems'
 import AuthorItems from '../components/AuthorItems'
+import TagItems from '../components/TagItems.vue'
 import CreatePost from '../components/createPost'
 import LoginView from '../views/LoginView.vue'
 import RegisterView from '../views/RegisterView.vue'
@@ -28,6 +29,11 @@ const routes = [
     path: '/author/:slug',
     name: 'author',
     component: AuthorItems
+  },
+  {
+    path: '/tag/:slug',
+    name: 'tag',
+    component: TagItems
   },
   {
     path: '/create-post',

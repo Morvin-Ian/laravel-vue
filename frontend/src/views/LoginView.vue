@@ -18,16 +18,18 @@
                       </div>
     
                       <h5 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;">Sign into your account</h5>
-    
+                      
+                      <p class="mb-3" style="color: red;" id="message"></p>
+
                       <div class="form-outline mb-4">
                   
-                        <input type="email" id="form2Example17" v-model="email" class="form-control form-control-lg" />
+                        <input type="email" id="form2Example17" v-model="email" class="form-control form-control-lg" required/>
                         <label class="form-label" for="form2Example17">Email address</label>
                       </div>
     
                       <div class="form-outline mb-4">
                   
-                        <input type="password" id="form2Example27" v-model="password" class="form-control form-control-lg" />
+                        <input type="password" id="form2Example27" v-model="password" class="form-control form-control-lg" required />
                         <label class="form-label" for="form2Example27">Password</label>
                        
                       </div>
@@ -92,7 +94,9 @@
 
         if (!response.ok) 
         {
-          console.log("Invalid Credentials")
+          const error = document.getElementById("message")
+          error.innerHTML = data.message
+          console.log(data.message)
             
         }
 
@@ -103,7 +107,7 @@
             // Initialize the access & refresh token in localstorage.
             localStorage.setItem('access_token', data.token);
             localStorage.setItem('user', data.user.id);
-            this.$router.push({name:"home"});
+            window.location = "/"
         }
 
     }
