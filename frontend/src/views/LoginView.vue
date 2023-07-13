@@ -11,26 +11,29 @@
                 </div>
                 <div class="col-md-6 col-lg-7 d-flex align-items-center">
                   <div class="card-body p-4 p-lg-5 text-black">
-    
+
                     <form  method="post" @submit="LoginUser">
                       <div class="d-flex align-items-center mb-3 pb-1">
                         <i class="fas fa-gem fa-2x me-3" style="color: #000000;"></i>
                       </div>
     
                       <h5 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;">Sign into your account</h5>
-                      
-                      <p class="mb-3" style="color: red;" id="message"></p>
+                      <p class="mb-3" style="color: red; font-size:small;" id="invalid_error"></p>
 
                       <div class="form-outline mb-4">
                   
-                        <input type="email" id="form2Example17" v-model="email" class="form-control form-control-lg" required/>
+                        <input type="text" id="form2Example17" v-model="email" class="form-control form-control-lg" />
                         <label class="form-label" for="form2Example17">Email address</label>
+                        <div class="mb-3" style="color: red; font-size:small;" id="email_error"></div>
+
                       </div>
     
                       <div class="form-outline mb-4">
                   
-                        <input type="password" id="form2Example27" v-model="password" class="form-control form-control-lg" required />
+                        <input type="password" id="form2Example27" v-model="password" class="form-control form-control-lg" />
                         <label class="form-label" for="form2Example27">Password</label>
+                        <div class="mb-3" style="color: red; font-size:small;" id="password_error"></div>
+
                        
                       </div>
     
@@ -94,9 +97,41 @@
 
         if (!response.ok) 
         {
-          const error = document.getElementById("message")
-          error.innerHTML = data.message
-          console.log(data.message)
+          if(data.errors.email)
+          {
+            const error = document.getElementById("email_error")
+            error.innerText = data.errors.email
+          }
+          else
+          {
+            const error = document.getElementById("email_error")
+            error.innerText = ""
+
+          }
+
+          if(data.errors.password)
+          {
+            const error = document.getElementById("password_error")
+            error.innerText = data.errors.password
+          }
+          else
+          {
+            const error = document.getElementById("password_error")
+            error.innerText = ""
+
+          }
+
+          if(data.errors.invalid)
+          {
+            const error = document.getElementById("invalid_error")
+            error.innerText = data.errors.invalid
+          }
+          else
+          {
+            const error = document.getElementById("invalid_error")
+            error.innerText = ""
+
+          }
             
         }
 
@@ -107,7 +142,10 @@
             // Initialize the access & refresh token in localstorage.
             localStorage.setItem('access_token', data.token);
             localStorage.setItem('user', data.user.id);
-            window.location = "/"
+            // this.$router.push({name:"home"});
+            window.location="/"
+
+
         }
 
     }

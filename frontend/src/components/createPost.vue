@@ -43,22 +43,25 @@
     <form class="p-4" method="post" @submit="createPost">
 
         <div class="mb-3 mt-2">
-            <label for="exampleInputEmail1" class="form-label">Title</label>
-            <input type="text" v-model="title" class="form-control" id="exampleInputEmail1" required>
-            <div id="emailHelp" class="form-text">Make it meaningful and short.</div>
-        </div>
-        <div class="mb-3">
-            <label for="exampleInputPassword1" class="form-label me-3">Category</label>
-            <select  v-model="category" required>
-              <option  v-for="category in categories" :value="category.id" :key="category.id">{{ category.name }}</option>
-            </select>
+            <label for="exampleInputEmail1" class="form-label">Title:</label>
+            <input type="text" v-model="title" class="form-control" id="exampleInputEmail1" >
+            <div class="mb-3 mt-2" style="color: red; font-size:small;" id="title_error"></div>
         </div>
 
         <div class="mb-3">
-          <label for="exampleInputPassword1" class="form-label">Tags</label>
-          <input type="text" id="tag-text" list="tag_list" v-model="tag" class="form-control" placeholder="Must be separated with comma" required/>
+            <label for="exampleInputPassword1" class="form-label me-3">Category:</label>
+            <select  v-model="category" >
+              <option  v-for="category in categories" :value="category.id" :key="category.id">{{ category.name }}</option>
+            </select>
+            <div class="mb-3 mt-2" style="color: red; font-size:small;" id="category_error"></div>
+
+        </div>
+
+        <div class="mb-3">
+          <label for="exampleInputPassword1" class="form-label">Tags:</label>
+          <input type="text" id="tag-text" list="tag_list" v-model="tag" class="form-control" placeholder="Must be separated with comma" />
           <div id="tag_list">
-            <ul  v-for="tag in tags" :value="tag.name" :key="tag.id">
+            <ul  v-for="tag in responseTags" :value="tag.name" :key="tag.id">
               <li id="tagBox" @click="addTag(tag.name)">
                 {{ tag.name }} 
                 
@@ -66,12 +69,16 @@
             </ul>
           </div>
           <div id="emailHelp" class="form-text">You can select more than one. (Click once to add, Click again to remove)</div>
+          <div class="mb-3 mt-2" style="color: red; font-size:small;" id="tag_error"></div>
+
         </div>
 
         <div class="mb-3">
-            <label for="exampleInputPassword1" class="form-label">Body</label>
-            <textarea name="body" v-model="body" id="" class="form-control" cols="30" rows="10" required></textarea>
-        </div>
+            <label for="exampleInputPassword1" class="form-label">Body:</label>
+            <textarea name="body" v-model="body" id="" class="form-control" cols="30" rows="10" ></textarea>
+            <div class="mb-3 mt-2" style="color: red; font-size:small;" id="body_error"></div>
+
+          </div>
  
         <button type="submit" class="btn btn-outline-dark px-5">Create</button>
     </form>
@@ -87,8 +94,12 @@
   data() {
     return {
       categories: [],
-      tags: [],
-      tag:''
+      responseTags: [],
+      tag:'',
+      title:'',
+      body:'',
+      category:''
+
 
     };
   },
@@ -130,7 +141,7 @@
           const response = await fetch(tagUrl);
           const data = await response.json();
 
-          this.tags = data
+          this.responseTags = data
 
         } catch (error) {
           console.error(error);
@@ -174,6 +185,7 @@
             user_id:localStorage.getItem("user"),
             body:this.body
           };
+          
 
         console.log( JSON.stringify(article))
 
@@ -191,14 +203,61 @@
 
         if (!response.ok) 
         {
-          console.log("Something went wrong")
+          if(data.errors.title || data.errors.slug)
+          {
+            const error = document.getElementById("title_error")
+            error.innerText = data.errors.title
+          }
+          else
+          {
+            const error = document.getElementById("title_error")
+            error.innerText = ""
+
+          }
+
+          if(data.errors.category_id)
+          {
+            const error = document.getElementById("category_error")
+            error.innerText = data.errors.category_id
+          }
+          else
+          {
+            const error = document.getElementById("category_error")
+            error.innerText = ""
+
+          }
+
+          if(data.errors.body)
+          {
+            const error = document.getElementById("body_error")
+            error.innerText = data.errors.body
+          }
+          else
+          {
+            const error = document.getElementById("body_error")
+            error.innerText = ""
+
+          }
+          console.log(data)
+
+          if(data.errors.tags)
+          {
+            const error = document.getElementById("tag_error")
+            error.innerText = data.errors.tags
+          }
+          else
+          {
+            const error = document.getElementById("tag_error")
+            error.innerText = ""
+
+          }
+          
             
         }
 
         else
         {
-          console.log(data)
-            this.$router.push({name:"home"});
+          this.$router.push({name:"home"});
         }
 
     }

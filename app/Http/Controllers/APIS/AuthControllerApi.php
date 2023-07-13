@@ -6,29 +6,34 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 
 class AuthControllerApi extends Controller
 {
     public function register(Request $request) {
-        $fields = $request->validate([
+
+        $validator = Validator::make($request->all(), [
             'name' => 'required|string|unique:users',
             'email' => 'required|string|unique:users,email',
-            'password' => 'required|string'
+            'password_confirmation' => 'required|string',
+            'password' => 'required|string|confirmed'
         ]);
 
 
-        $user = User::create([
-            'name' => $fields['name'],
-            'email' => $fields['email'],
-            'password' => bcrypt($fields['password'])
-        ]);
-
-        if (!$user)
-        {
-            return response([
-                'message' => 'Email or Username already taken'
-            ], 401);
+        if ($validator->fails()) {
+            $errors = $validator->errors();
+            return response()->json([
+                'message' => 'Validation Error',
+                'errors' => $errors,
+            ], 422); 
         }
+
+        $user = new User();
+        $user->name = $request->input('name');
+        $user->email = $request->input('email');
+        $user->password = $request->input('password');
+
+        $user->save();
 
         $token = $user->createToken('myapptoken')->plainTextToken;
 
@@ -41,18 +46,29 @@ class AuthControllerApi extends Controller
     }
 
     public function login(Request $request) {
-        $fields = $request->validate([
-            'email' => 'required|string',
+    
+
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|string|email',
             'password' => 'required|string'
         ]);
 
+
+        if ($validator->fails()) {
+            $errors = $validator->errors();
+            return response()->json([
+                'message' => 'Validation Error',
+                'errors' => $errors,
+            ], 422); 
+        }
+
         // Check email
-        $user = User::where('email', $fields['email'])->first();
+        $user = User::where('email', $request->input('email'))->first();
 
         // Check password
-        if(!$user || !Hash::check($fields['password'], $user->password)) {
+        if(!$user || !Hash::check($request->input('password'), $user->password)) {
             return response([
-                'message' => 'Incorrect credentials'
+                'errors' => ['invalid'=>'Invalid credentials']
             ], 401);
         }
 

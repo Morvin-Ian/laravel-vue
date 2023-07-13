@@ -7,6 +7,7 @@ use App\Models\Category;
 use App\Models\Post;
 use App\Models\Tag;
 use App\Models\User;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 
 class PostControllerApi extends Controller
@@ -152,15 +153,31 @@ class PostControllerApi extends Controller
 
     public function post_creation(Request $request)
     {
-        $fields = $request->validate([
-            'title' => ['required'],
-            'body' => ['required'],
-            'category_id' => ['required'],
-            'user_id' => ['required'],
-            'slug' => ['required']
+        $validator = Validator::make($request->all(), [
+            'title' => 'required',
+            'body' => 'required',
+            'category_id' => 'required',
+            'user_id' => 'required',
+            'slug' => 'required',
+            'tags'=>'required'
         ]);
 
-        $post = Post::create($fields);
+        if ($validator->fails()) {
+            $errors = $validator->errors();
+            return response()->json([
+                'message' => 'Validation Error',
+                'errors' => $errors,
+            ], 422); 
+        }
+
+
+        $post = new Post();
+        $post->title = $request->input('title');
+        $post->body = $request->input('body');
+        $post->category_id = $request->input('category_id');
+        $post->user_id = $request->input('user_id');
+        $post->slug = $request->input('slug');
+        $post->save();
 
         $existing_tags = Tag::all();
         $tags = $request["tags"];
