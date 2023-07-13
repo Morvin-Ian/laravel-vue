@@ -10,7 +10,7 @@
     padding: 0;
     margin: 0;
     display: inline-block;
-    background-color: #e9ecef;
+    background-color: #b5c1ce;
     padding: 5px 10px;
     border-radius: 5px;
     margin-right: 5px;
@@ -59,13 +59,13 @@
           <input type="text" id="tag-text" list="tag_list" v-model="tag" class="form-control" placeholder="Must be separated with comma" required/>
           <div id="tag_list">
             <ul  v-for="tag in tags" :value="tag.name" :key="tag.id">
-              <li @click="addTag(tag.name)">
+              <li id="tagBox" @click="addTag(tag.name)">
                 {{ tag.name }} 
                 
               </li>
             </ul>
           </div>
-          <div id="emailHelp" class="form-text">You can select more than one.</div>
+          <div id="emailHelp" class="form-text">You can select more than one. (Click once to add, Click again to remove)</div>
         </div>
 
         <div class="mb-3">
@@ -139,11 +139,30 @@
     },
 
     addTag(clickedTag) {
-        if (this.tag) {
-          this.tag += ', '; 
+   
+      if (this.tag) {
+        // Split the existing tags into an array
+        const existingTags = this.tag.split(', ');
+
+        // Check if the clickedTag already exists in the array
+        const tagIndex = existingTags.indexOf(clickedTag);
+
+        if (tagIndex !== -1) {
+          // If the tag already exists, remove it from the array
+          existingTags.splice(tagIndex, 1);
+        } else {
+          // If the tag doesn't exist, append it to the array
+          existingTags.push(clickedTag);
         }
-        this.tag += clickedTag; 
-      },
+
+        // Join the modified array back into a string
+        this.tag = existingTags.join(', ');
+      } else {
+        this.tag = clickedTag;
+      }
+
+    },
+
 
     async createPost (event) {
         event.preventDefault();

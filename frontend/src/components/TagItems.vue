@@ -21,6 +21,7 @@
   
   <script>
   export default {
+    
     data() {
       return {
         post: [],
@@ -37,7 +38,6 @@
           const data = await response.json();
   
           this.post = data;
-          console.log(data)
         } catch (error) {
           console.error(error);
         }
