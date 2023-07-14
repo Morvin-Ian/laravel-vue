@@ -10,13 +10,15 @@
               <router-link :to="`/tag/${tag.name}`"> {{ tag.name }}</router-link>
             </ul>
           </p>
-          <p>{{ post.post.body }}</p>
+          <p>{{ truncateText(post.post.body, 150) }}</p>
         </li>
       </ul>
     </div>
     <hr>
   </template>
   
+  <style>
+</style>
 
   <script>
   export default {
@@ -39,6 +41,13 @@
           console.error(error);
         }
       },
+      truncateText(text, maxLength) {
+      if (text.length <= maxLength) {
+        return text;
+      } else {
+        return text.substr(0, maxLength).trim() + '...';
+      }
+    },
     },
   };
   </script>

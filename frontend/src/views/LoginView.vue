@@ -77,6 +77,15 @@
  
   },
   methods: {
+    handleErrors(data, field, errorId) {
+            const error = document.getElementById(errorId);
+            if (data.errors[field]) {
+              error.innerText = data.errors[field];
+            } else {
+              error.innerText = "";
+            }
+    },
+
 
    
     async LoginUser (event) {
@@ -99,38 +108,21 @@
         {
           if(data.errors.email)
           {
-            const error = document.getElementById("email_error")
-            error.innerText = data.errors.email
-          }
-          else
-          {
-            const error = document.getElementById("email_error")
-            error.innerText = ""
+            this.handleErrors(data, "email", "email_error");
 
           }
+     
 
           if(data.errors.password)
           {
-            const error = document.getElementById("password_error")
-            error.innerText = data.errors.password
-          }
-          else
-          {
-            const error = document.getElementById("password_error")
-            error.innerText = ""
+            this.handleErrors(data, "password", "password_error");
 
           }
+       
 
           if(data.errors.invalid)
           {
-            const error = document.getElementById("invalid_error")
-            error.innerText = data.errors.invalid
-          }
-          else
-          {
-            const error = document.getElementById("invalid_error")
-            error.innerText = ""
-
+            this.handleErrors(data, "invalid", "invalid_error");
           }
             
         }

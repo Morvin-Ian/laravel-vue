@@ -49,6 +49,8 @@
                 
                         <input type="password" v-model="password_confirmation" id="form3Example97"   class="form-control form-control-lg" />
                         <label class="form-label" for="form3Example97">Password Confirmation</label>
+                        <p class="mb-3" style="color: red; font-size:small;" id="password_confirmation_error"></p>
+
                     </div>
     
                     <div class="d-flex justify-content-end pt-3">
@@ -93,6 +95,16 @@ mounted() {
 },
 methods: {
 
+  handleErrors(data, field, errorId) {
+            const error = document.getElementById(errorId);
+            if (data.errors[field]) {
+              error.innerText = data.errors[field];
+            } else {
+              error.innerText = "";
+            }
+   },
+
+
   async RegisterUser (event) {
       event.preventDefault();
       const credentials = {
@@ -129,41 +141,26 @@ methods: {
 
           if (!response.ok) 
           {
-            if(data.errors.email)
-            {
-              const error = document.getElementById("email_error")
-              error.innerText = data.errors.email
-            }
-            else
-            {
-              const error = document.getElementById("email_error")
-              error.innerText = ""
 
-            }
+          if(data.errors.email)
+          {
+            this.handleErrors(data, "email", "email_error");
 
-            if(data.errors.password)
-            {
-              const error = document.getElementById("password_error")
-              error.innerText = data.errors.password
-            }
-            else
-            {
-              const error = document.getElementById("password_error")
-              error.innerText = ""
+          }
+     
 
-            }
+          if(data.errors.password)
+          {
+            this.handleErrors(data, "password", "password_error");
+
+          }
 
             if(data.errors.name)
             {
-              const error = document.getElementById("name_error")
-              error.innerText = data.errors.name
-            }
-            else
-            {
-              const error = document.getElementById("name_error")
-              error.innerText = ""
+              this.handleErrors(data, "name", "name_error");
 
             }
+
             
           }
 

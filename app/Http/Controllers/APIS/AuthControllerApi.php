@@ -15,7 +15,6 @@ class AuthControllerApi extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|unique:users',
             'email' => 'required|string|unique:users,email',
-            'password_confirmation' => 'required|string',
             'password' => 'required|string|confirmed'
         ]);
 
@@ -82,14 +81,5 @@ class AuthControllerApi extends Controller
         return response($response, 200);
     }
 
-    public function logout(Request $request) {
-        auth()->logout();
-
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
-
-        return [
-            'message' => 'Logged out'
-        ];
-    }
+   
 }

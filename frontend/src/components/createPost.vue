@@ -90,6 +90,7 @@
 <script>
 
 
+
   export default {
   data() {
     return {
@@ -113,9 +114,11 @@
 
     this.fetchCategories();
     this.fetchTags();
+    
 
   },
   methods: {
+
 
     async fetchCategories () {
       const categoryUrl = "http://127.0.0.1:8000/api/categories";
@@ -174,6 +177,17 @@
 
     },
 
+    
+    handleErrors(data, field, errorId) {
+            const error = document.getElementById(errorId);
+            if (data.errors[field]) {
+              error.innerText = data.errors[field];
+            } else {
+              error.innerText = "";
+            }
+    },
+
+
 
     async createPost (event) {
         event.preventDefault();
@@ -186,7 +200,6 @@
             body:this.body
           };
           
-
 
         const postUrl = "http://127.0.0.1:8000/api/create-post";
         const response = await fetch(postUrl, {
@@ -202,59 +215,33 @@
 
         if (!response.ok) 
         {
-          if(data.errors.title || data.errors.slug)
-          {
-            const error = document.getElementById("title_error")
-            error.innerText = data.errors.title
-          }
-          else
-          {
-            const error = document.getElementById("title_error")
-            error.innerText = ""
-
-          }
-
-          if(data.errors.category_id)
-          {
-            const error = document.getElementById("category_error")
-            error.innerText = data.errors.category_id
-          }
-          else
-          {
-            const error = document.getElementById("category_error")
-            error.innerText = ""
-
-          }
-
-          if(data.errors.body)
-          {
-            const error = document.getElementById("body_error")
-            error.innerText = data.errors.body
-          }
-          else
-          {
-            const error = document.getElementById("body_error")
-            error.innerText = ""
-
-          }
-
-          if(data.errors.tags)
-          {
-            const error = document.getElementById("tag_error")
-            error.innerText = data.errors.tags
-          }
-          else
-          {
-            const error = document.getElementById("tag_error")
-            error.innerText = ""
-
-          }
           
+        
+          if(data.errors.title){
+            this.handleErrors(data, "title", "title_error");
+          }
+
+          if(data.errors.category_id){
+            this.handleErrors(data, "category_id", "category_error");
+
+          }
+
+          if(data.errors.body){
+            this.handleErrors(data, "body", "body_error");
+
+          }
+
+          if(data.errors.tags){
+            this.handleErrors(data, "tags", "tag_error");
+
+          }
             
         }
 
         else
         {
+          console.log(data)
+
           this.$router.push({name:"home"});
         }
 
